@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>D3: Adding data points (circles) to the map</title>
+		<script type="text/javascript" src="https://d3js.org/d3.v3.min.js"></script>
+		<style type="text/css">
+			button {
+			margin: 0 auto;
+			background-color:#EEF7D7;
+			-moz-border-radius:8px;
+			-webkit-border-radius:8px;
+			border-radius:8px;
+			border:1px solid #939788;
+			display:inline-block;
+			cursor:pointer;
+			color:#000000;
+			font-size:16px;
+			font-weight:bold;
+			padding:6px 24px;
+			text-decoration:none;
+			text-align: center;
+		}
+
+		.textContainer {
+			background-color: white;
+			-moz-border-radius:8px;
+			color:#000000;
+			font-size:16px;
+			font-weight:bold;
+			padding:6px 24px;
+			text-decoration:none;
+			text-align: center;
+
+	}
+
+			.listContainer {
+			float: left;
+			text-align: left;
+			position: relative;	
+		}
+
+	.main-container {
+      float: left;
+      position: relative;
+      left: 50%;
+    }
+    .fixer-container {
+      float: left;
+      position: relative;
+      left: -50%;
+    }
+
+	</style>
+	</head>
+	<body>
+
+
+		<div class="textContainer">
+		<h1> K-means clustering </h1>
+		<p> We have six different data sets to visualize the clusters. They are:
+			<div class="listContainer">
+			<ul> 1. High dropout rates </ul>
+			<ul> 2. Low dropout rates </ul>
+			<ul> 3. Serious crimes </ul>
+			<ul> 4. Less serious crimes </ul>
+			<ul> 5. Public housing locations </ul>
+			<ul> 6. Trees in the city </ul>
+		</div>
+		<h3> Toggle between the buttons to see different numbers of clusters! </h3>
+	</div>
+
+			<div class="main-container">
+	  <div class="fixer-container">
+	    <ul class="list-of-floating-elements">
+		<button id='3' class="centButton"> Three centers </button>
+		<button id='4' class="centButton"> Four centers </button>
+		<button id='5' class="centButton"> Five centers </button>
+		<button id='6' class="centButton"> Six centers </button>
+
+	    </ul>
+	  </div>
+	</div>
+	<div>
+
+		<div style="width:700px;">
+		  <div class ="high_schoolContainer"; style="width:250px; float:left;"></div>
+
+		  <div class ="low_schoolContainer"; style="width:250px; float:right;"></div>
+		</div>
+				<div style="width:700px;">
+		  <div class ="serious_crimeContainer"; style="width:250px; float:left;"></div>
+		  <div class ="less_crimeContainer"; style="width:250px; float:right;"></div>
+		</div>
+		<div style="width:700px;">
+		  <div class ="publicContainer"; style="width:250px; float:left;"></div>
+		  <div class ="treeContainer"; style="width:250px; float:right;"></div>
+		</div>
+	</div>
+	
+		<!--<div class="divSquare" id="school"></div>
+		<div class="divSquare" id="public">2</div>
+		<div style='clear:both'></div>
+		<div class="divSquare" id="tree">3</div>
+		<div class="divSquare" id="crime">4</div>*/-->
+		<script type="text/javascript">
+						//Width and height
+			var w = 500;
+			var h = 320;
+			//Define map projection
+          var projection = d3.geo.mercator()
+                .center([-73.86, 40.73])
+                .scale(30000)
+                .translate([w / 2, h / 2]);
+
+                
+			//Define path generator
+			var path = d3.geo.path()
+							 .projection(projection);
+
+							 
+			//Create SVG element
+			var svg_highSchool = d3.select(".high_schoolContainer")
+			.append("svg")
+			.attr("width", w)
+			.attr("height", h);
+			
+			var newYork_highSchool= svg_highSchool.append("g");
+			var high_schoolLocations = svg_highSchool.append("g");
+			var high_schoolCenters = svg_highSchool.append("g");
+
+			var svg_lowSchool = d3.select(".low_schoolContainer")
+			.append("svg")
+			.attr("width", w)
+			.attr("height", h);
+
+			//Create Title 
+			
+			var newYork_lowSchool = svg_lowSchool.append("g");
+			var low_schoolLocations = svg_lowSchool.append("g");
+			var low_schoolCenters = svg_lowSchool.append("g");
+
+			//EITTHVAÐ AÐ REYNA MEÐ TEXTA
+			//var text = svg_lowSchool.append("text")
+		    //.attr("x", w / 2 )
+		    //.attr("y", 0)
+		    //.style("text-anchor", "middle")
+		    //.text("Title of Diagram");
+
+			var svg_seriousCrime = d3.select(".serious_crimeContainer")
+			.append("svg")
+			.attr("width", w)
+			.attr("height", h);
+			
+			var newYork_seriousCrime = svg_seriousCrime.append("g");
+			var serious_crimeLocations = svg_seriousCrime.append("g");
+			var serious_crimeCenters = svg_seriousCrime.append("g");
+
+			var svg_lessCrime = d3.select(".less_crimeContainer")
+			.append("svg")
+			.attr("width", w)
+			.attr("height", h);
+
+			var newYork_lessCrime = svg_lessCrime.append("g");
+			var less_crimeLocations = svg_lessCrime.append("g");
+			var less_crimeCenters = svg_lessCrime.append("g");
+
+
+			var svgPublic = d3.select(".publicContainer")
+				.append("svg")
+				.attr("width", w)
+				.attr("height", h);
+
+			var newYorkPublic = svgPublic.append("g")
+			var publicLocations = svgPublic.append("g")
+			var publicCenters = svgPublic.append("g")
+
+			var svgTree = d3.select(".treeContainer")
+						.append("svg")
+						.attr("width", w)
+						.attr("height", h);
+			
+			var newYorkTree= svgTree.append("g");
+			var treeLocations = svgTree.append("g");
+			var treeCenters = svgTree.append("g");
+
+
+			centers = [high_schoolCenters, low_schoolCenters, serious_crimeCenters, less_crimeCenters, publicCenters, treeCenters];
+			
+			centerFiles = ["centers_colors_school_high_df.csv", "centers_colors_school_low_df.csv", "centers_colors_crime_serious_df.csv", "centers_colors_crime_less_df.csv", "centers_colors_public_df.csv", "centers_colors_tree_df.csv"];
+
+
+			function createCenters(numK, nr) {
+				centers[nr].selectAll("circle").remove()
+				d3.csv(centerFiles[nr], function(dataCenters){
+					centers[nr].selectAll("circle")
+						.data(dataCenters)
+						.enter()
+						.append("circle")
+						.attr("cx", function(d) {
+							return projection([+d['X_' + numK], +d['Y_' + numK]])[0];
+						})
+						.attr("cy", function(d) {
+							return projection([+d['X_' + numK], +d['Y_' + numK]])[1];
+						})
+						.attr("r", 10)
+						.style("fill", function(d) {
+					   	return d.centerColors;
+					   	console.log(d.centerColors);
+					   })
+						.style("stroke", "black")
+		       			.style("stroke-width", 3);
+					});
+			}
+
+
+			locations = [high_schoolLocations, low_schoolLocations, serious_crimeLocations, less_crimeLocations, publicLocations, treeLocations];
+
+			files = ["clusterLocations_school_high_final.csv", "clusterLocations_school_low_final.csv", "clusterLocations_crime_serious_final.csv", "clusterLocations_crime_less_final.csv", "clusterLocations_public_final.csv", "clusterLocations_tree_final.csv"]
+
+			function createLocations(numK, nr) {
+				locations[nr].selectAll("circle").remove()
+				d3.csv("clusterLocations/" + files[nr], function(dataLocations) {
+					locations[nr].selectAll("circle")
+					   .data(dataLocations)
+					   .enter()
+					   .append("circle")
+					   .attr("cx", function(d) {
+						   return projection([d.lon, d.lat])[0];
+					   })
+					   .attr("cy", function(d) {
+						   return projection([d.lon, d.lat])[1];
+					   })
+					   	.attr("r", function(d) {
+							ringSize = [d.dropoutPerc/12, d.dropoutPerc/12, 2, 2, 1.5, 1];
+							return ringSize[nr];
+						})
+					   .style("fill", function(d) {
+					   	return d['kmeans' + numK];
+					   })
+					   .style("opacity", 0.5);
+					});
+			}
+
+			baseMapColors = ["blue", "turquoise", "red", "pink", "purple", "green"];
+
+			map = [newYork_highSchool, newYork_lowSchool, newYork_seriousCrime, newYork_lessCrime, newYorkPublic, newYorkTree];
+
+			function createBaseMap(nr){
+			   //Bind data and create one path per GeoJSON feature
+	           d3.json("School-Districts.geojson", function(json){
+	           map[nr].selectAll("path")
+	                .data(json.features)
+	                .enter()
+	                .append("path")
+	                .attr("d", path)
+	                .style("fill", baseMapColors[nr])
+	                .attr('stroke-width',0.7)
+	                .attr('stroke',"#120A31")});
+	                // ANNAÐ AÐ REYNA MEÐ TEXTA
+	                //.append("text")
+	                //.text("CRIMES")
+                 	//.attr("font-family", "sans-serif")
+                 	//.attr("font-size", "50px")
+               		//.attr("fill", "black")});
+			}
+
+
+	            d3.selectAll(".centButton").on("click", function(){
+						buttonID = d3.select(this).attr("id")
+						createLocations(buttonID, 0)
+						createLocations(buttonID, 1)
+						createLocations(buttonID, 2)
+						createLocations(buttonID, 3)
+						createLocations(buttonID, 4)
+						createLocations(buttonID, 5)
+
+						createCenters(buttonID, 0)
+						createCenters(buttonID, 1)
+						createCenters(buttonID, 2)
+						createCenters(buttonID, 3)
+						createCenters(buttonID, 4)
+						createCenters(buttonID, 5)
+						console.log(buttonID)
+						// 
+						});
+
+	            d3.selectAll(".high_schoolContainer").on("load", createBaseMap(0));
+	            d3.selectAll(".low_schoolContainer").on("load", createBaseMap(1));
+	            d3.selectAll(".serious_crimeContainer").on("load", createBaseMap(2));
+	            d3.selectAll(".less_crimeContainer").on("load", createBaseMap(3));
+	            d3.selectAll(".publicContainer").on("load", createBaseMap(4));
+	            d3.selectAll(".treeContainer").on("load", createBaseMap(5));
+		
+		</script>
+	</body>
+</html>
