@@ -1,147 +1,50 @@
 <!DOCTYPE html>
-<html lang="en">
-	<head>
-		<meta charset="utf-8">
-		<title>D3: Adding data points (circles) to the map</title>
-		<script type="text/javascript" src="https://d3js.org/d3.v3.min.js"></script>
-		<style type="text/css">
-			button {
-			margin: 0 auto;
-			background-color:#EEF7D7;
-			-moz-border-radius:8px;
-			-webkit-border-radius:8px;
-			border-radius:8px;
-			border:1px solid #939788;
-			display:inline-block;
-			cursor:pointer;
-			color:#000000;
-			font-size:16px;
-			font-weight:bold;
-			padding:6px 24px;
-			text-decoration:none;
-		}
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>Women in movies</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">Women in movies</h1>
+      <h2 class="project-tagline">A school project exploring the status of women in the world of movies</h2>
+      <a href="https://helgasvala.github.io/Women-in-Movies/index" class="btn">Main page</a>
+      <a href="https://helgasvala.github.io/Women-in-Movies/networks" class="btn">Network analysis</a>
+      <a href="https://helgasvala.github.io/Women-in-Movies/graphs" class="btn">Graphs</a>
+      <a href="https://helgasvala.github.io/Women-in-Movies/text" class="btn">Text analysis</a>
+    </section>
 
-		.textContainer {
-			background-color: white;
-			-moz-border-radius:8px;
-			color:#000000;
-			font-size:16px;
-			font-weight:bold;
-			padding:6px 24px;
-			text-decoration:none;
-		}
+    <section class="main-content">
+      <h2>
+<a id="welcome-to-github-pages" class="anchor" href="#welcome-to-github-pages" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>The Project</h2>
 
-		</style>
-	</head>
-	<body>
-		<div class="textContainer">
-		<p> High schools in New York City visualized in terms of school districts: </p>
-	</div>
-	<input class="myCheckbox" id="schoolCheckbox" type="checkbox" name="school" value=0> High school dropout rates<br>
-	<input class="myCheckbox" id="publicCheckbox" type="checkbox" name="public" value=1> Public housing<br>
-	<input class="myCheckbox" id="treeCheckbox" type="checkbox" name="tree" value=2> Trees<br>
-	<input class="myCheckbox" id="crimeCheckbox" type="checkbox" name="crime" value=3> Crime rates<br>
-		<script type="text/javascript">
-			data = [0, 1, 2, 3];
-			//Width and height
-			var w = 1000;
-			var h = 800;
-			//Define map projection
-            var projection = d3.geo.mercator()
-                .center([-73.86, 40.68])
-                .scale(70000)
-                .translate([w / 2, h / 2]);
-                
-			//Define path generator
-			var path = d3.geo.path()
-							 .projection(projection);
-							 
-			//Create SVG element
-			var svg = d3.select("body")
-						.append("svg")
-						.attr("width", w)
-						.attr("height", h);
-
-			var newYork = svg.append("g");
-			var crimes = svg.append("g");
-			var schools = svg.append("g");
-			var publicHousing = svg.append("g");
-			var trees = svg.append("g");
-			d3.selectAll(".myCheckbox").on("change", update);
-			update();
-			function update(){
-		        var choices = [];
-		        d3.selectAll(".myCheckbox").each(function(d){
-		          cb = d3.select(this);
-		          if(cb.property("checked")){
-		            choices.push(cb.property("value"));
-		          }
-		        });
-		      	if (choices.length == 0) {
-		      		newData = createBaseMap();
-		      		createPoints(choices[4])
-		      	}
-		        else {
-		        	for (i=0; i < choices.length; i++){
-		        		createPoints(choices[i]);
-		        	}
-		        }
-			}	      
-
-			function createBaseMap() {
-			   //Bind data and create one path per GeoJSON feature
-	           d3.json("School-Districts.geojson", function(json){
-	           	newYork.selectAll("path")
-	                .data(json.features)
-	                .enter()
-	                .append("path")
-	                .attr("d", path)
-	                .style("fill", "#FFD700")
-	                .attr('stroke-width',0.7)
-	                .attr('stroke',"#120A31")});
-	            }
-
-	     	function createPoints(table) {
-	     	dataLists = ["school-2012-data.csv", "public_housing_latlon.csv", "sample-100-trees.csv", "sample-crimes-location.csv", "nodata.csv"];
-	        colorFill = ["blue", "white", "green", "red", "yellow"]
-	        strokeWidth = [1.5, 1.5, 0.7, 1.5, 0]
-	        opacity = [0.2, 0.5, 0.2, 0.2, 0]
-				schools.selectAll("circle").remove()
-				d3.csv(dataLists[table], function(centers){
-					schools.selectAll("circle")
-						.data(centers)
-						.enter()
-						.append("circle")
-						.attr("cx", function(d) {
-							return projection([d.lon, d.lat])[0];
-						})
-						.attr("cy", function(d) {
-							return projection([d.lon, d.lat])[1];
-						})
-						.attr("r", function(d) {
-							ringSize = [d.dropoutperc/8, 3, 2, 2, 0];
-							return ringSize[table];
-						})
-						.style("fill", colorFill[table])
-						.style("stroke", "black")
-		       			.style("stroke-width", strokeWidth[table])
-		       			.style("opacity", opacity[table]);
-					});
-			}
-
-			
-
-	            d3.selectAll(".centButton").on("click", function(){
-						buttonID = d3.select(this).attr("id")
-						createLocations()
-						createCenters(buttonID)
-						createOther()
-						console.log(buttonID)
-						// 
-						});
+<p>Our project aims at exploring the status of women in the world of movies. 
+  We want to analyze how they appear, in acting, directing and writing. 
+  We want to see how the ratings, as well as the genre of their movies are compared to those of men. 
+  We also use term frequency - inverse document frequency analysis to see which words are the most likely 
+  to be used in the user reviews, and check the sentiment of the reviews. <br/> <br/> Getting the data for our project 
+  was the biggest challenge. It was very hard to acquire some user reviews, which we considered the biggest part 
+  of the task, but finally we were able to get them from The Movie Database. We get lists of movies made in 
+  specific years from Wikipedia, information about the movies returned from The Open Movie Database (an imdb API), 
+  and to determine which gender the people on our list are, we (partly) use a name gender API which only allows 
+  1000 requests a day. Some harder names were also gender-determined by hand.
+    <p> A video made for this project can be viewed <a href="https://www.youtube.com/watch?v=wxvRpqFD-ck">here.</a> <br/>
+  </p>
+  As all the data was aquired from various websites, it's not possible to provide a download link for the dataset, it was never downloaded.
+  However, if a user is very determined to access the data, it is of course an option to go through all of the notebooks, and extract
+  the data from the websites in the same way as done there. We provide three notebooks. In the first, the data is extracted, the second contains graphs and text analysis, and the third one contains the network analysis. <br/>
+  <a href="http://nbviewer.jupyter.org/gist/helgasvala/0b2310cccc302dc504b668158fabb39a"> This is the link to the notebook where we gather our data.</a> <br/>
+  <a href="http://nbviewer.jupyter.org/gist/helgasvala/b2044b1567290f090623529b5e3b23f8"> This is the link to the notebook where we make the graph and text analysis.</a> <br/>
+  <a href="http://nbviewer.jupyter.org/gist/helgasvala/8676bf33baa615c387d98d28c92abfc8"> And finally the link to the notebook where we make the network analysis.</a>
 
 
-			
-		</script>
-	</body>
+    </section>
+
+  
+  </body>
 </html>
