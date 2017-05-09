@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>Connecting data in NYC</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">Connecting data in NYC</h1>
+      <h2 class="project-tagline">A school project exploring different data sets from New York City</h2>
+      <a href="https://helgasvala.github.io/social-data-project-2017/index" class="btn">Main page</a>
+      <a href="https://helgasvala.github.io/social-data-project-2017/high-school" class="btn">High school dropout plots</a>
+      <a href="https://helgasvala.github.io/social-data-project-2017/knn" class="btn">High school dropout neighbour classification</a>
+      <a href="https://helgasvala.github.io/social-data-project-2017/crimes" class="btn">Crimes</a>
+      <a href="https://helgasvala.github.io/social-data-project-2017/k-means" class="btn">K-means</a>
+    </section>
+
+    <section class="main-content">
+      <h2>
+<a id="welcome-to-github-pages" class="anchor" href="#welcome-to-github-pages" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>The Project</h2>
+
+<p> Let's look at some data from the schools. Our initial dataset was just over 30 MBs, which we extracted from. We looked
+  at how enrollment year, length of studies, ethnicity, gender and districts has affected the dropout rates of high school
+  students in New York City.
+  <br>
+  <b> Let's look at some plots we got from analysing this data, starting with the progression over the years: </b>
+  <br>
+  <br>
+  <img src="plotlyplots/yearline.png" alt="Enrollment year" height="380" width="780">
+  <br>
+  <br>
+  We see that the dropout rates peaked for those enrolled around the time when the financial crisis hit, in 2008, but have
+  been getting steadily lower over the last few years. Note that these are numbers for students enrolled at a certain year,
+  they could have dropped out any time after that.
+  <br>
+  <br>
+  <b>Next, we look at the dropout rates based on the planned length of studies: </b>
+  <br>
+  <br>
+  <img src="plotlyplots/lengthline.png" alt="Study length" height="380" width="780">
+  <br>
+  <br>
+  The dropout rates vary a lot more between the planned length of studies than the enrollment year. Perhaps unsurprisingly,
+  those who plan a longer time for their studies have a much greater chance of dropping out along the way.
+  <br>
+  <br>
+  <b> Now for the barplots, comparing different ethnicities: </b>
+  <br>
+  <br>
+  <img src="plotlyplots/ethnicbar.png" alt="Ethnicity" height="380" width="780">
+  <br>
+  <br>
+  These results are very stereotypical. The Asian have the lowest dropout rates, followed closely by Caucasians. 
+  It's higher for black, hispanic and especially Native American students, which is a known problem in the U.S. 
+  The Multi-Racial have an extremely low dropout rate, but we only had nine data samples from then, out of which 
+  seven had a zero percent dropout rate.
+  <br>
+  <br>
+  <b> Moving on to the genders: </b>
+  <br>
+  <br>
+  <img src="plotlyplots/genderbar.png" alt="Gender" height="380" width="780">
+  <br>
+  <br>
+  The difference between the genders is not very big, but females have a slightly higher dropout rate than males. 
+  The lists showed 451 females and 445 males so the difference cannot be attributed to uneven data sets.
+  <br>
+  <br>
+  <b> Finally, we have barplots for the distribution between districts: </b>
+  <br>
+  <br>
+  <img src="plotlyplots/districtbar.png" alt="District" height="380" width="780">
+  <br>
+  <br>
+    </section>
+
+  
+  </body>
+</html>
