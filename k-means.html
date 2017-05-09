@@ -73,29 +73,57 @@
 
     <section class="main-content">
       <h2>
-<a id="welcome-to-github-pages" class="anchor" href="#welcome-to-github-pages" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>The Project</h2>
+<a id="welcome-to-github-pages" class="anchor" href="#welcome-to-github-pages" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>K-means clustering</h2>
 
 	    
-<p> Our project aims at exploring four different data sets in New York City, and how they correlate with each other.
-<p> A video made for this project can be viewed <a href="https://www.youtube.com/watch?v=k3nx980-zT0">here.</a> <br/>
-  </p> The download links to the datasets can be found at the top of the following notebook:<br/>
-  <a href="http://nbviewer.jupyter.org/gist/helgasvala/0b2310cccc302dc504b668158fabb39a"> This is the link to the notebook where we gather our data.</a> <br/>
- <br>		
-  The dataset we work most with is some data of high school dropout rates in all schools in the city from 2005-2012.
-  We have data over dropout rates between districts, genders, ethnicities, years and planned length of education. 
-  We do some basic barplots to compare this data, and do a K-nearest neighbour analysis for different number of neighbours
-  predicting for high, medium and low dropout rates to see which dropout rate a school is most likely to have.
-  <br>
-  For crimes, we do:: ******************************
-<br>	
-  
-  For the other datasets, we just visualize the locations to compare them to the schools and crimes. Here, users are
-  able to click the distribution of the datasets they wish. Although it is a nice feature to be able to visualize it
-  this way, this doesn't tell us all that much, since all points are everywhere. Note that the blue circles represent
-  the high schools; the larger the circle, the higher the dropout rate.
-  <br>
-<br>
-	    			<div class="main-container">
+<p> Now we do some unsupervised machine learning, namely K-means clustering. It aims to partition observations into clusters,
+	in which each observations belongs to the cluster with the nearest mean. In each step, the mean is recalculated and 
+	the observations moved to the relevant clusters. When the mean has stopped updating, we have reached the final clusters.
+	<br>
+	<br>
+	We are interested in seeing the differences between clusters of serious crimes, i.e. crimes that involve the hurting of
+	people (murder, rape, felony assault) and those less serious (robbery, burglary, grand larceny and grand larceny of motor vehicle).
+	As do we want to compare the clusters of low dropout rates from high school and high dropout rates, now partitioning at 15%.
+	We also take the rest of the datasets, seeing how public houses and trees cluster in the city and if there is a correlation
+	between the clusters.
+	We began by applying the algorithm to 2 to 10 clusters in Python. We then calculated the mean squared error of each of the methods, 
+	in order to see what would be the most relevant cluster numbers. 
+	<br>
+	<br>
+	<b> We look at the knee-points of the mean squared errors for each dataset: </b>
+	<br>
+	<br>
+	<img src=kmeans/kneelpoints.png alt="knee-points" height="460" width="780">
+	<br>
+	<br>
+	Even though it's unclear on some of the data sets (especially less serious crimes and public housing) 
+	where the knee-point is, it seems to be around 4 clusters, so we'll try with 3, 4, 5 and 6 clusters. 
+	More clusters will lead to overfitting.
+	<br>
+	<br>
+	Next, we plotted the clusters in matplotlib, to see if they were clustering right (since the d3-visualization
+	was showing weird clusters). We tried all the plots for four clusters:
+	<img src=kmeans/kmeansmatplotlib.png alt="matplotlib" height="460" width="780">
+	<br>
+	<br>
+	We note that already here, the clusters are not right, since the functionality of k-means gives that all points should 
+	be coloured as their nearest center. The centers are right, but the clustered points are all over the place. We tried
+	many different algorithms to solve this, but weren't able to find a solution. We have various datasets so it's very
+	strange that something would be wrong with all of them, but something is definitely wrong. Colourful pictures though!
+	<br>
+	<br>
+	We also visualize this using d3 in javascript. Below, a user is able to click buttons to get the number of centers of 
+	their choice and visually compare between the maps. Since all of the data is very well distributed (especially the
+	trees) the centers of the different data sets mostly show up in the same places. There is little difference between
+	high and low dropout rates from high school, as for the severity of crimes, in regards of the location, at least not
+	when looking at a map this general. Better results would probably be obtained by looking closer at the map. Note that
+	very many schools are in the same locations, so the dropout rates can vary on the same place (that's why some of the
+	circles look like mildew). Again, dropout rates represent the sizes of the circles, so the circles on the low dropout
+	rate map to the right are much smaller than the ones on the left.
+	
+	
+	    
+	<div class="main-container">
 	  <div class="fixer-container">
 	    <ul class="list-of-floating-elements">
 		<button id='3' class="centButton"> Three centers </button>
