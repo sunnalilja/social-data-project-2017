@@ -54,14 +54,13 @@
 			var w = 1000;
 			var h = 800;
 			//Define map projection
-            var projection = d3.geo.mercator()
-                .center([-73.86, 40.68])
-                .scale(70000)
-                .translate([w / 2, h / 2]);
+           		var projection = d3.geo.mercator()
+                	.center([-73.86, 40.68])
+                	.scale(70000)
+                	.translate([w / 2, h / 2]);
                 
 			//Define path generator
-			var path = d3.geo.path()
-							 .projection(projection);
+			var path = d3.geo.path().projection(projection);
 							 
 			//Create SVG element
 			var svg = d3.select(".main-content")
@@ -78,41 +77,48 @@
 			update();
 			function update(){
 		        var choices = [];
+			
+			// take in the checkboxes
 		        d3.selectAll(".myCheckbox").each(function(d){
 		          cb = d3.select(this);
 		          if(cb.property("checked")){
 		            choices.push(cb.property("value"));
 		          }
 		        });
-		      	if (choices.length == 0) {
-		      		newData = createBaseMap();
-		      		createPoints(choices[4])
-		      	}
-		        else {
-		        	for (i=0; i < choices.length; i++){
-		        		createPoints(choices[i]);
-		        	}
-		        }
+				// create a map without points
+				if (choices.length == 0) {
+					newData = createBaseMap();
+					createPoints(choices[4])
+				}
+				// create points on map
+				else {
+					for (i=0; i < choices.length; i++){
+						createPoints(choices[i]);
+					}
+				}
 			}	      
 
+			
+			// create a map of New York City
 			function createBaseMap() {
 			   //Bind data and create one path per GeoJSON feature
-	           d3.json("School-Districts.geojson", function(json){
-	           	newYork.selectAll("path")
-	                .data(json.features)
-	                .enter()
-	                .append("path")
-	                .attr("d", path)
-	                .style("fill", "#FFD700")
-	                .attr('stroke-width',0.7)
-	                .attr('stroke',"#120A31")});
-	            }
+				d3.json("School-Districts.geojson", function(json){
+				newYork.selectAll("path")
+				.data(json.features)
+				.enter()
+				.append("path")
+				.attr("d", path)
+				.style("fill", "#ff1f1f")
+				.attr('stroke-width',0.7)
+				.attr('stroke',"#120A31")});
+	            	}
 
-	     	function createPoints(table) {
-	     	dataLists = ["school-2012-data.csv", "public_housing_latlon.csv", "sample-trees-rounded.csv", "sample-crimes.csv", "nodata.csv"];
-	        colorFill = ["blue", "white", "green", "red", "yellow"]
-	        strokeWidth = [1.5, 1.5, 0.7, 1.5, 0]
-	        opacity = [0.2, 0.5, 0.2, 0.2, 0]
+			// create the points the respective checkbox calls
+			function createPoints(table) {
+				dataLists = ["school-2012-data.csv", "public_housing_latlon.csv", "sample-trees-rounded.csv", "sample-crimes.csv", "nodata.csv"];
+				colorFill = ["blue", "white", "green", "red", "ff1f1f"]
+				strokeWidth = [1.5, 1.5, 0.7, 1.5, 0]
+				opacity = [0.2, 0.5, 0.2, 0.2, 0]
 				schools.selectAll("circle").remove()
 				d3.csv("pointData/" + dataLists[table], function(centers){
 					schools.selectAll("circle")
@@ -131,23 +137,10 @@
 						})
 						.style("fill", colorFill[table])
 						.style("stroke", "black")
-		       			.style("stroke-width", strokeWidth[table])
-		       			.style("opacity", opacity[table]);
-					});
+						.style("stroke-width", strokeWidth[table])
+						.style("opacity", opacity[table]);
+				});
 			}
-
-
-
-	            d3.selectAll(".centButton").on("click", function(){
-						buttonID = d3.select(this).attr("id")
-						createLocations()
-						createCenters(buttonID)
-						createOther()
-						console.log(buttonID)
-						// 
-						});
-
-
 			
 		</script>
     </section>
