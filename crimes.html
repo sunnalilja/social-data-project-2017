@@ -25,23 +25,14 @@
 <a id="welcome-to-github-pages" class="anchor" href="#welcome-to-github-pages" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Dwelling deeper into crimes</h2>
 
 <p> Our project aims at exploring four different data sets in New York City, and how they correlate with each other.
-  The dataset we work most with is some data of high school dropout rates in all schools in the city from 2005-2012.
+  The dataset we work most with is data of high school dropout rates in all schools in the city from 2005-2012.
   We have data over dropout rates between districts, genders, ethnicities, years and planned length of education. 
   We do some basic barplots to compare this data, and do a K-nearest neighbour analysis for different number of neighbours,
   predicting for high, medium and low dropout rates.
   
-  
-  
-  Our project aims at exploring the status of women in the world of movies. 
-  We want to analyze how they appear, in acting, directing and writing. 
-  We want to see how the ratings, as well as the genre of their movies are compared to those of men. 
-  We also use term frequency - inverse document frequency analysis to see which words are the most likely 
-  to be used in the user reviews, and check the sentiment of the reviews. <br/> <br/> Getting the data for our project 
-  was the biggest challenge. It was very hard to acquire some user reviews, which we considered the biggest part 
-  of the task, but finally we were able to get them from The Movie Database. We get lists of movies made in 
-  specific years from Wikipedia, information about the movies returned from The Open Movie Database (an imdb API), 
-  and to determine which gender the people on our list are, we (partly) use a name gender API which only allows 
-  1000 requests a day. Some harder names were also gender-determined by hand.
+ We subtracted criminal data from New York. Unfortunately the dataset does not provide efficient data over the years, only the criminal data form 
+  2015 is sufficient. We made a support vector machine analysis on the data to see if certain crimes occured on certain days on a specific time. 
+  The information can be useful for knowing when and where the city is more dangerous. 
     <p> A video made for this project can be viewed <a href="https://www.youtube.com/watch?v=wxvRpqFD-ck">here.</a> <br/>
   </p>
   As all the data was aquired from various websites, it's not possible to provide a download link for the dataset, it was never downloaded.
