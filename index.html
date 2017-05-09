@@ -26,22 +26,124 @@
 <p> Our project aims at exploring four different data sets in New York City, and how they correlate with each other.
   The dataset we work most with is some data of high school dropout rates in all schools in the city from 2005-2012.
   We have data over dropout rates between districts, genders, ethnicities, years and planned length of education. 
-  We do some basic barplots to compare this data, and do a K-nearest neighbour analysis for different number of neighbours,
-  predicting for high, medium and low dropout rates.
+  We do some basic barplots to compare this data, and do a K-nearest neighbour analysis for different number of neighbours
+  predicting for high, medium and low dropout rates to see which dropout rate a school is most likely to have.
   
+  For crimes, we do:: ******************************
   
+  For the other datasets, we just visualize the locations to compare them to the schools and crimes. Here, users are
+  able to click the distribution of the datasets they wish. Although it is a nice feature to be able to visualize it
+  this way, this doesn't tell us all that much, since all points are everywhere. Note that the blue circles represent
+  the high schools; the larger the circle, the higher the dropout rate.
   
-  Our project aims at exploring the status of women in the world of movies. 
-  We want to analyze how they appear, in acting, directing and writing. 
-  We want to see how the ratings, as well as the genre of their movies are compared to those of men. 
-  We also use term frequency - inverse document frequency analysis to see which words are the most likely 
-  to be used in the user reviews, and check the sentiment of the reviews. <br/> <br/> Getting the data for our project 
-  was the biggest challenge. It was very hard to acquire some user reviews, which we considered the biggest part 
-  of the task, but finally we were able to get them from The Movie Database. We get lists of movies made in 
-  specific years from Wikipedia, information about the movies returned from The Open Movie Database (an imdb API), 
-  and to determine which gender the people on our list are, we (partly) use a name gender API which only allows 
-  1000 requests a day. Some harder names were also gender-determined by hand.
-    <p> A video made for this project can be viewed <a href="https://www.youtube.com/watch?v=wxvRpqFD-ck">here.</a> <br/>
+  <input class="myCheckbox" id="schoolCheckbox" type="checkbox" name="school" value=0> High school dropout rates<br>
+	<input class="myCheckbox" id="publicCheckbox" type="checkbox" name="public" value=1> Public housing<br>
+	<input class="myCheckbox" id="treeCheckbox" type="checkbox" name="tree" value=2> Trees<br>
+	<input class="myCheckbox" id="crimeCheckbox" type="checkbox" name="crime" value=3> Crime rates<br>
+		<script type="text/javascript">
+			data = [0, 1, 2, 3];
+			//Width and height
+			var w = 1000;
+			var h = 800;
+			//Define map projection
+            var projection = d3.geo.mercator()
+                .center([-73.86, 40.68])
+                .scale(70000)
+                .translate([w / 2, h / 2]);
+                
+			//Define path generator
+			var path = d3.geo.path()
+							 .projection(projection);
+							 
+			//Create SVG element
+			var svg = d3.select("body")
+						.append("svg")
+						.attr("width", w)
+						.attr("height", h);
+
+			var newYork = svg.append("g");
+			var crimes = svg.append("g");
+			var schools = svg.append("g");
+			var publicHousing = svg.append("g");
+			var trees = svg.append("g");
+			d3.selectAll(".myCheckbox").on("change", update);
+			update();
+			function update(){
+		        var choices = [];
+		        d3.selectAll(".myCheckbox").each(function(d){
+		          cb = d3.select(this);
+		          if(cb.property("checked")){
+		            choices.push(cb.property("value"));
+		          }
+		        });
+		      	if (choices.length == 0) {
+		      		newData = createBaseMap();
+		      		createPoints(choices[4])
+		      	}
+		        else {
+		        	for (i=0; i < choices.length; i++){
+		        		createPoints(choices[i]);
+		        	}
+		        }
+			}	      
+
+			function createBaseMap() {
+			   //Bind data and create one path per GeoJSON feature
+	           d3.json("School-Districts.geojson", function(json){
+	           	newYork.selectAll("path")
+	                .data(json.features)
+	                .enter()
+	                .append("path")
+	                .attr("d", path)
+	                .style("fill", "#FFD700")
+	                .attr('stroke-width',0.7)
+	                .attr('stroke',"#120A31")});
+	            }
+
+	     	function createPoints(table) {
+	     	dataLists = ["school-2012-data.csv", "public_housing_latlon.csv", "sample-trees-rounded.csv", "sample-crimes.csv", "nodata.csv"];
+	        colorFill = ["blue", "white", "green", "red", "yellow"]
+	        strokeWidth = [1.5, 1.5, 0.7, 1.5, 0]
+	        opacity = [0.2, 0.5, 0.2, 0.2, 0]
+				schools.selectAll("circle").remove()
+				d3.csv("pointData/" + dataLists[table], function(centers){
+					schools.selectAll("circle")
+						.data(centers)
+						.enter()
+						.append("circle")
+						.attr("cx", function(d) {
+							return projection([d.lon, d.lat])[0];
+						})
+						.attr("cy", function(d) {
+							return projection([d.lon, d.lat])[1];
+						})
+						.attr("r", function(d) {
+							ringSize = [d.dropoutperc/8, 3, 2, 2, 0];
+							return ringSize[table];
+						})
+						.style("fill", colorFill[table])
+						.style("stroke", "black")
+		       			.style("stroke-width", strokeWidth[table])
+		       			.style("opacity", opacity[table]);
+					});
+			}
+
+
+
+	            d3.selectAll(".centButton").on("click", function(){
+						buttonID = d3.select(this).attr("id")
+						createLocations()
+						createCenters(buttonID)
+						createOther()
+						console.log(buttonID)
+						// 
+						});
+
+
+			
+		</script>
+  
+  <p> A video made for this project can be viewed <a href="https://www.youtube.com/watch?v=k3nx980-zT0">here.</a> <br/>
   </p>
   As all the data was aquired from various websites, it's not possible to provide a download link for the dataset, it was never downloaded.
   However, if a user is very determined to access the data, it is of course an option to go through all of the notebooks, and extract
