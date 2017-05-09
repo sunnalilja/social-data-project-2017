@@ -43,7 +43,7 @@ SOFTWARE.
 }
 
 .pl-ent /* entity.name.tag */ {
-  color: #63a35c;
+  color: #9f609f;
 }
 
 .pl-k /* keyword, storage, storage.type */ {
@@ -109,7 +109,7 @@ SOFTWARE.
 }
 
 .pl-mi1 /* markup.inserted, meta.diff.header.to-file */ {
-  color: #55a532;
+  color: #9f609f;
   background-color: #eaffea;
 }
 
