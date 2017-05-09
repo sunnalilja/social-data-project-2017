@@ -221,7 +221,7 @@
 
 			function createCenters(numK, nr) {
 				centers[nr].selectAll("circle").remove()
-				d3.csv(centerFiles[nr], function(dataCenters){
+				d3.csv("clusterCenters/" + centerFiles[nr], function(dataCenters){
 					centers[nr].selectAll("circle")
 						.data(dataCenters)
 						.enter()
