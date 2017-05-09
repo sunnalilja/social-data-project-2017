@@ -30,18 +30,16 @@
   We do some basic barplots to compare this data, and do a K-nearest neighbour analysis for different number of neighbours,
   predicting for high, medium and low dropout rates.
   
+ We extracted criminal data set for New York city. Sadly there is not available good criminal data over many years, only for the year 2015. 
+  Therefore we could not predict crimes over the next span of years, instead we used support vector machine to examine if we could see any pattern in the data.
+  The idea was to examine when serious crimes (Rape and Murder) happen (at what weekday and at what time) in each neighbourhood in New York, to know when the city is most dangerous. 
+  Support vector machine is a supervised learning that analyze data used for classification and regression analysis,in our case we used classification where the crime was an output.
+  We fed information into a python SVM model, where each data point either belonged to the class Rape or Murder,
+  then SVM training algorithm builds a model from the training dataset that assigns new examples to one category or the other, making it a non-probabilistic binary linear classifier.
+  Then we used the test Data set to evalute the error of the Model. The result can be found below:
   
   
-  Our project aims at exploring the status of women in the world of movies. 
-  We want to analyze how they appear, in acting, directing and writing. 
-  We want to see how the ratings, as well as the genre of their movies are compared to those of men. 
-  We also use term frequency - inverse document frequency analysis to see which words are the most likely 
-  to be used in the user reviews, and check the sentiment of the reviews. <br/> <br/> Getting the data for our project 
-  was the biggest challenge. It was very hard to acquire some user reviews, which we considered the biggest part 
-  of the task, but finally we were able to get them from The Movie Database. We get lists of movies made in 
-  specific years from Wikipedia, information about the movies returned from The Open Movie Database (an imdb API), 
-  and to determine which gender the people on our list are, we (partly) use a name gender API which only allows 
-  1000 requests a day. Some harder names were also gender-determined by hand.
+ 
     <p> A video made for this project can be viewed <a href="https://www.youtube.com/watch?v=wxvRpqFD-ck">here.</a> <br/>
   </p>
   As all the data was aquired from various websites, it's not possible to provide a download link for the dataset, it was never downloaded.
