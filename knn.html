@@ -20,65 +20,73 @@
       <a href="https://helgasvala.github.io/social-data-project-2017/k-means" class="btn">K-means</a>
     </section>
 
-    <section class="main-content">
+<section class="main-content">
       <h2>
 <a id="welcome-to-github-pages" class="anchor" href="#welcome-to-github-pages" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>The Project</h2>
 
-<p> Let's look at some data from the schools. Our initial dataset was just over 30 MBs, which we extracted from. We looked
-  at how enrollment year, length of studies, ethnicity, gender and districts has affected the dropout rates of high school
-  students in New York City.
+<p> In this section, we perform KNN-classification (K-nearest neighbours). The input in the algorithm consists of the
+  k closest training-examples we have. The output is a class membership, where an object is assigned to the class most 
+  common among its k nearest neighbours. We classify examples based on if the dropout rate in the neighbours is
+  low (under 5%) medium (5-25%) or high (over 25%). 
   <br>
-  <b> Let's look at some plots we got from analysing this data, starting with the progression over the years: </b>
-  <br>
-  <br>
-  <img src="plotlyplots/yearline.png" alt="Enrollment year" height="380" width="780">
-  <br>
-  <br>
-  We see that the dropout rates peaked for those enrolled around the time when the financial crisis hit, in 2008, but have
-  been getting steadily lower over the last few years. Note that these are numbers for students enrolled at a certain year,
-  they could have dropped out any time after that.
+  <b> First, we visualize the low, medium and high dropout rates in the city. We keep the frame large as New York City
+  is far from being square so it's a bit hard to keep in all the examples. We start with low rates:</b>
   <br>
   <br>
-  <b>Next, we look at the dropout rates based on the planned length of studies: </b>
+  <img src="knnplots/droplow.png" alt="Low dropout" height="380" width="780">
+  <br>
+  <br> 
+  Clearly, a large portion of the school has low dropout rates, which are spread all over the city.
   <br>
   <br>
-  <img src="plotlyplots/lengthline.png" alt="Study length" height="380" width="780">
+  <b>Medium dropout rates: </b>
   <br>
   <br>
-  The dropout rates vary a lot more between the planned length of studies than the enrollment year. Perhaps unsurprisingly,
-  those who plan a longer time for their studies have a much greater chance of dropping out along the way.
+  <img src="knnplots/dropmedium.png" alt="Medium dropout" height="380" width="780">
   <br>
   <br>
-  <b> Now for the barplots, comparing different ethnicities: </b>
+  <b> High dropout rates: </b>
   <br>
   <br>
-  <img src="plotlyplots/ethnicbar.png" alt="Ethnicity" height="380" width="780">
+  <img src="knnplots/drophigh.png" alt="High dropout" height="380" width="780">
   <br>
   <br>
-  These results are very stereotypical. The Asian have the lowest dropout rates, followed closely by Caucasians. 
-  It's higher for black, hispanic and especially Native American students, which is a known problem in the U.S. 
-  The Multi-Racial have an extremely low dropout rate, but we only had nine data samples from then, out of which 
-  seven had a zero percent dropout rate.
+  We note that the high dropout rates stretch a little higher up to the north (also to Staten Island, but since we only have two
+  examples from there it's not really data you can analyze).
   <br>
   <br>
-  <b> Moving on to the genders: </b>
+  Now we make a grid of the city. Since we only have two data points from Staten Island, and have to involve a large part of the state
+  that is not in the city just to keep the district on the map, we drop it.
   <br>
   <br>
-  <img src="plotlyplots/genderbar.png" alt="Gender" height="380" width="780">
+  <img src="knnplots/gridnyc.png" alt="Grid" height="380" width="780">
   <br>
   <br>
-  The difference between the genders is not very big, but females have a slightly higher dropout rate than males. 
-  The lists showed 451 females and 445 males so the difference cannot be attributed to uneven data sets.
+  <b> Now, we perform knn-classification for 5, 15 and 30 neighbours: </b>
   <br>
   <br>
-  <b> Finally, we have barplots for the distribution between districts: </b>
+  <b> Five neighbours </b>
   <br>
   <br>
-  <img src="plotlyplots/districtbar.png" alt="District" height="380" width="780">
+  <img src="knnplots/knn5.png" alt="knn5" height="380" width="780">
   <br>
   <br>
-    </section>
-
-  
+  <b> Fifteen neighbours </b>
+  <br>
+  <br>
+  <img src="knnplots/knn15.png" alt="knn15" height="380" width="780">
+  <br>
+  <br>
+  <b> Thirty neighbours </b>
+  <br>
+  <br>
+  <img src="knnplots/knn30.png" alt="knn30" height="380" width="780">
+  <br>
+  <br>
+  It was hard to visualize this when including Staten Island, given that the city is so far from being square. 
+  The grid-points outside of the city limits didn't have any values so they generally became large clusters of 
+  the same colors. After limiting the map to the city, there is more going on inside of the clusters. Inside the city,
+  they become larger with a growing number of neighbours, as expected.
+  </section>
   </body>
 </html>
